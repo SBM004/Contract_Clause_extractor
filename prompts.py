@@ -6,7 +6,7 @@ def prompts(pdf_text:str,contract_id:str)->str:
     contract_type:<type of contract>
     clause_heading: <heading of the clause>
     contract_id: {contract_id}
-    clause_id: <number of the clause as per PDF>
+    clause_id: <number of the clause as per PDF if it is null add clause_heading >
     clause:<clause_heading , text of the clause>
     Extract the clauses from the content given below
     

@@ -7,7 +7,7 @@ cursor=conn.cursor()
 cursor.execute("""CREATE TABLE IF NOT EXISTS clauses (
     contract_type VARCHAR(225) NOT NULL,
     contract_id   VARCHAR(225) NOT NULL,
-    clause_id   INT NOT NULL,
+    clause_id   VARCHAR(225) NOT NULL ,
     clause_heading VARCHAR(225),
     clause  TEXT,
     PRIMARY KEY (contract_id, clause_id)
@@ -15,24 +15,30 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS clauses (
 # conn.close()
 conn.commit()
 def store_database(json_path:str):
+    print("in database")
     if json_path=="":
         return "invalid_path"
     # cursor=conn.cursor()
     try:
         with open(json_path,"r",encoding="utf-8") as f:
             json_data=json.load(f)
-        
+        counter=1
         for clause in json_data:
+            clause_id = clause.get("clause_id")
+            # print(clause_id)
+            if not clause_id:  # if null or missing
+                clause_id = f"CLAUSE_{counter:03d}"  # CLAUSE_001, CLAUSE_002...
+                counter += 1
             cursor.execute("""
                 INSERT INTO clauses (contract_type, contract_id, clause_id, clause_heading, clause) values (
                 %s,%s,%s,%s,%s
                 )
             """,(clause["contract_type"],
                 clause["contract_id"],
-                clause["clause_id"],
+                clause.get("clause_id"),
                 clause["clause_heading"],
                 clause["clause"]))
-        conn.commit()
+            conn.commit()
         print("saved in database")
         
         # os.remove(json_path)

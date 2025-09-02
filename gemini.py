@@ -61,6 +61,7 @@ def searching(pdf_text:str):
     if raw_text.startswith('```'):
         raw_text=raw_text.split('```')[1]
         raw_text = raw_text.lstrip("json").strip()
+        
     try:
         json_file=json.loads(raw_text)
         print("here in try")

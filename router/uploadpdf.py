@@ -114,15 +114,15 @@ def uploading():
             os.remove(path)
 
             return Response(
-                f"File uploaded successfully! ID: {file_id} and json file path:{path}",
+                f"File uploaded successfully! in open search and Database",
                 status=200
             )
         else:
             return Response("hello upload")
 
-    except RuntimeError as re:  # 👈 Catch business errors
+    except RuntimeError as re:  
         return jsonify({"error": "Processing Error", "details": str(re)}), 400
 
-    except Exception as e:  # 👈 Unexpected
+    except Exception as e:  
         return jsonify({"error": "Internal Server Error", "details": str(e)}), 500
     
